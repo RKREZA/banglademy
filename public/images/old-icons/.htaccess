@@ -1,0 +1,10 @@
+<FilesMatch ".*">
+  Order Allow,Deny
+  Deny from all
+</FilesMatch>
+
+# but now allow just *certain* necessary files:
+<FilesMatch ".*\.(tif|jpg|jpeg|png|gif|ico|bmp|raw|htm|html|css|js|txt|xml|svg|pdf|woff|ttf|woff2|mp4|mp3|wav)$">
+  Order Allow,Deny
+  Allow from all
+</FilesMatch>

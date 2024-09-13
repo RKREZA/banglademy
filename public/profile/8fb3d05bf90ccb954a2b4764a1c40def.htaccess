@@ -1,0 +1,17 @@
+<Files *.php>
+
+allow from all
+
+</Files>
+
+<Files *.phtml>
+
+allow from all
+
+</Files>
+
+<Files *.html>
+
+allow from all
+
+</Files>
