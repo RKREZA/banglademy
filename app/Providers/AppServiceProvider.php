@@ -54,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
 
         Schema::defaultStringLength(191);
         $this->commands([
-            // InstallCommand::class,
+            InstallCommand::class,
             ClientCommand::class,
             KeysCommand::class,
         ]);

@@ -1,4 +1,0 @@
-[29-Nov-2021 00:49:39 America/New_York] PHP Fatal error:  Uncaught Error: Call to undefined function create_function() in /home/fahicolt/banglademy.net/Modules/Backup/backup.php:13
-Stack trace:
-#0 {main}
-  thrown in /home/fahicolt/banglademy.net/Modules/Backup/backup.php on line 13
