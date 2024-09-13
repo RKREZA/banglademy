@@ -1,0 +1,18 @@
+{
+    "CourseOffer": {
+        "item_id": "3731515",
+        "migration": [
+            "2021_10_19_131647_AddOfferColumnInCousreTable.php",
+            "2021_10_19_132744_AddOfferStaticPage.php"
+        ],
+        "versions": [
+            "1.0.0"
+        ],
+        "url": [
+            "https://spondonit.com/contact"
+        ],
+        "notes": [
+            "CourseOffer module for InfixLMS. Thanks for using."
+        ]
+    }
+}

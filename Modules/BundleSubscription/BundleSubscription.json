@@ -1,0 +1,30 @@
+{
+    "BundleSubscription": {
+        "item_id": "3731212",
+        "migration": [
+            "2021_08_02_154057_create_bundle_course_plans_table.php",
+            "2021_08_02_154140_create_bundle_courses_table.php",
+            "2021_08_03_195755_create_bundle_reveiws_table.php",
+            "2021_08_04_165510_add_bundle_to_course_enrolleds_table.php",
+            "2021_08_05_103519_add_bubdle_to_carts_table.php",
+            "2021_08_08_170524_add_type_to_checkouts_table.php",
+            "2021_08_10_123807_add_bundle_subscription_permission.php",
+            "2021_08_11_153526_create_bundle_settings_table.php",
+            "2021_08_11_161138_add_bundle_reveune_to_.php",
+            "2021_08_12_120052_add_renew_to_carts_table.php",
+            "2021_08_12_121306_add_renew_to_checkouts_table.php",
+            "2021_08_12_140849_add_bundle_id_to_checkouts_table.php",
+            "2021_10_05_192821_add_bundle_static_page_to_frotpage.php",
+            "2021_11_13_174924_AddReviewStatusInBundleSetting.php"
+        ],
+        "versions": [
+            "1.0.1"
+        ],
+        "url": [
+            "https://spondonit.com/contact"
+        ],
+        "notes": [
+            "This is a Bundle Subscription module. Thanks for using."
+        ]
+    }
+}

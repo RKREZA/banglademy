@@ -1,0 +1,59 @@
+.p-15 {
+    padding: 15px;
+}
+
+.card-header {
+    padding: 5px;
+}
+
+.card {
+    margin-top: 5px;
+}
+
+.create-title {
+    position: relative;
+    cursor: pointer;
+}
+
+.create-title::after {
+    content: "\f107";
+    color: #333;
+    top: 12px;
+    right: 5px;
+    position: absolute;
+    font-family: "Font Awesome\ 5 Free"
+}
+
+.create-title[aria-expanded="true"]::after {
+    content: "\f106";
+}
+
+.cust-btn-link {
+    color: #415094;
+    text-decoration: none !important;
+}
+
+.cust-btn-link:hover {
+    text-decoration: none !important;
+
+}
+
+.button {
+    border: none;
+    color: white;
+    padding: 11px 13px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 0 !important;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    line-height: 22px !important;
+}
+
+.settingBtn {
+    position: absolute;
+    left: 11px;
+    top: 14px;;
+}

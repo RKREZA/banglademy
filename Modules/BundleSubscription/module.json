@@ -1,0 +1,13 @@
+{
+    "name": "BundleSubscription",
+    "alias": "bundlesubscription",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\BundleSubscription\\Providers\\BundleSubscriptionServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}
