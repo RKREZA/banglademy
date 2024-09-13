@@ -636,40 +636,40 @@
                                                     </div>
 
 
-{{--                                                    <div class="col-xl-6 courseBox mb-25">--}}
-{{--                                                        <div class="primary_input  ">--}}
+                                                    {{--                                                    <div class="col-xl-6 courseBox mb-25">--}}
+                                                    {{--                                                        <div class="primary_input  ">--}}
 
-{{--                                                            <div class="row  ">--}}
-{{--                                                                <div class="col-md-12">--}}
-{{--                                                                    <label class="primary_input_label mt-1"--}}
-{{--                                                                           for=""> {{__('common.Complete course sequence')}}</label>--}}
-{{--                                                                </div>--}}
-{{--                                                                <div class="col-md-3 mb-25">--}}
-{{--                                                                    <label class="primary_checkbox d-flex mr-12"--}}
-{{--                                                                           for="complete_order0">--}}
-{{--                                                                        <input type="radio"--}}
-{{--                                                                               class="common-radio complete_order0"--}}
-{{--                                                                               id="complete_order0"--}}
-{{--                                                                               name="complete_order"--}}
-{{--                                                                               value="0" {{@$course->complete_order==0?"checked":""}}>--}}
-{{--                                                                        <span class="checkmark mr-2"></span>      {{__('common.No')}}</label>--}}
-{{--                                                                </div>--}}
-{{--                                                                <div class="col-md-3 mb-25">--}}
+                                                    {{--                                                            <div class="row  ">--}}
+                                                    {{--                                                                <div class="col-md-12">--}}
+                                                    {{--                                                                    <label class="primary_input_label mt-1"--}}
+                                                    {{--                                                                           for=""> {{__('common.Complete course sequence')}}</label>--}}
+                                                    {{--                                                                </div>--}}
+                                                    {{--                                                                <div class="col-md-3 mb-25">--}}
+                                                    {{--                                                                    <label class="primary_checkbox d-flex mr-12"--}}
+                                                    {{--                                                                           for="complete_order0">--}}
+                                                    {{--                                                                        <input type="radio"--}}
+                                                    {{--                                                                               class="common-radio complete_order0"--}}
+                                                    {{--                                                                               id="complete_order0"--}}
+                                                    {{--                                                                               name="complete_order"--}}
+                                                    {{--                                                                               value="0" {{@$course->complete_order==0?"checked":""}}>--}}
+                                                    {{--                                                                        <span class="checkmark mr-2"></span>      {{__('common.No')}}</label>--}}
+                                                    {{--                                                                </div>--}}
+                                                    {{--                                                                <div class="col-md-3 mb-25">--}}
 
-{{--                                                                    <label class="primary_checkbox d-flex mr-12"--}}
-{{--                                                                           for="complete_order1">--}}
-{{--                                                                        <input type="radio"--}}
-{{--                                                                               class="common-radio complete_order1"--}}
-{{--                                                                               id="complete_order1"--}}
-{{--                                                                               name="complete_order"--}}
-{{--                                                                               value="1" {{@$course->complete_order==1?"checked":""}}>--}}
+                                                    {{--                                                                    <label class="primary_checkbox d-flex mr-12"--}}
+                                                    {{--                                                                           for="complete_order1">--}}
+                                                    {{--                                                                        <input type="radio"--}}
+                                                    {{--                                                                               class="common-radio complete_order1"--}}
+                                                    {{--                                                                               id="complete_order1"--}}
+                                                    {{--                                                                               name="complete_order"--}}
+                                                    {{--                                                                               value="1" {{@$course->complete_order==1?"checked":""}}>--}}
 
 
-{{--                                                                        <span class="checkmark mr-2"></span> {{__('common.Yes')}}</label>--}}
-{{--                                                                </div>--}}
-{{--                                                            </div>--}}
-{{--                                                        </div>--}}
-{{--                                                    </div>--}}
+                                                    {{--                                                                        <span class="checkmark mr-2"></span> {{__('common.Yes')}}</label>--}}
+                                                    {{--                                                                </div>--}}
+                                                    {{--                                                            </div>--}}
+                                                    {{--                                                        </div>--}}
+                                                    {{--                                                    </div>--}}
 
                                                     <div class="row">
                                                         <div class="col-xl-6 courseBox mb-25">

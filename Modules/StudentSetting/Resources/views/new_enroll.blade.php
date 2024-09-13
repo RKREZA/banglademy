@@ -58,13 +58,13 @@
                                                                 <span class="text-danger">*</span>
                                                             </label>
                                                             <div class="primary_input mb-15">
-                                                                <select name="student[]" id="staticPagesInput" class="primary_multiselect mb-15 e1" multiple >
+                                                            <select name="student[]" id="staticPagesInput" class="primary_multiselect mb-15 e1" multiple >
 
-                                                                    @foreach ($students as $student)
-                                                                        <option
-                                                                                value="{{$student->id}}">{{$student->email}}</option>
-                                                                    @endforeach
-                                                                </select>
+                                                                @foreach ($students as $student)
+                                                                    <option
+                                                                        value="{{$student->id}}">{{$student->email}}</option>
+                                                                @endforeach
+                                                            </select>
                                                             </div>
                                                         </div>
 
@@ -80,19 +80,21 @@
                                                                 @foreach ($courses as $course)
                                                                     @php
                                                                         if ($course->type==1){
-                                                                            $type =trans('courses.Courses');
-                                                                        }elseif($course->type==2){
-                                                                            $type =trans('quiz.Quiz');
+    $type =trans('courses.Courses');
 
-                                                                        } elseif($course->type==3){
-                                                                            $type =trans('virtual-class.Class');
+    }elseif($course->type==2){
+    $type =trans('quiz.Quiz');
 
-                                                                        }else{
-                                                                            $type ='';
-                                                                        }
+    } elseif($course->type==3){
+    $type =trans('virtual-class.Class');
+
+    }else{
+    $type ='';
+    }
+
                                                                     @endphp
                                                                     <option
-                                                                            value="{{$course->id}}">{{$course->title}} ({{$type}})
+                                                                        value="{{$course->id}}">{{$course->title}} ({{$type}})
                                                                     </option>
                                                                 @endforeach
                                                             </select>

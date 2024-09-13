@@ -1,3 +1,4 @@
+
 <form enctype="multipart/form-data" id="{{ $form_id }}">
     <div class="row">
         <input type="hidden" name="id" id="item_id">

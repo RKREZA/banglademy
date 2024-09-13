@@ -65,6 +65,9 @@
                 <a href="{{route('popup-content.index')}}">{{ __('frontendmanage.Popup Content') }}</a>
             </li>
         @endif
+            <li>
+                <a href="{{route('admin.offerCount')}}">{{ __('Offer CountDown') }}</a>
+            </li>
 
         @if(permissionCheck('footerSetting.footer.index'))
             <li>

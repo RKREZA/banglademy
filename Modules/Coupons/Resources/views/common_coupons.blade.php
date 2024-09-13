@@ -52,8 +52,9 @@
                                             @endif
                                             @endif
                                             @csrf
-                                            @if(isset($edit)) <input type="hidden" name="id"
-                                                                     value="{{$edit->id}}"> @endif
+                                            @if(isset($edit))
+                                                <input type="hidden" name="id" value="{{$edit->id}}">
+                                            @endif
                                             <input type="hidden" name="category" value="1">
                                             <div class="row">
 
@@ -371,5 +372,5 @@
     @include('backend.partials.delete_modal')
 @endsection
 @push('scripts')
-    <script src="{{asset('public/backend/js/category.js')}}"></script>
+    <script src="{{url('Modules/Coupons/Resources/assets/js/app.js')}}"></script>
 @endpush

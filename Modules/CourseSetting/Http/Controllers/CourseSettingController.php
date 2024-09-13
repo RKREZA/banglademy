@@ -453,8 +453,6 @@ class CourseSettingController extends Controller
     public function AdminUpdateCourse(Request $request)
     {
 
-//        dd($request->all());
-
         Session::flash('type', 'update');
         Session::flash('id', $request->id);
 
@@ -566,6 +564,7 @@ class CourseSettingController extends Controller
             }
 
             $course->upcoming = $request->upcoming;
+
             $course->level = $request->level;
             $course->mode_of_delivery = $request->mode_of_delivery;
 
@@ -698,6 +697,7 @@ class CourseSettingController extends Controller
 
             $chapters = Chapter::where('course_id', $id)->orderBy('position', 'asc')->with('lessons')->get();
 
+//            dd($chapters);
 
             $categories = Category::get();
             $instructors = User::where('role_id', 2)->get();
@@ -866,6 +866,8 @@ class CourseSettingController extends Controller
         }
 
         $chapters = Chapter::where('course_id', $id)->orderBy('position', 'asc')->with('lessons')->get();
+
+//        dd($chapters);
 
         $categories = Category::get();
         $instructors = User::where('role_id', 2)->get();

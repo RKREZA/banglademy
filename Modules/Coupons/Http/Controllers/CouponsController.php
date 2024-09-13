@@ -185,7 +185,8 @@ class CouponsController extends Controller
     {
         try {
             $coupons = Coupon::with('totalUsed')->where('category', 1)->latest()->get();
-            return view('coupons::common_coupons', compact('coupons'));
+            $categories = Category::all();
+            return view('coupons::common_coupons', compact('coupons','categories'));
         } catch (\Exception $e) {
             return response()->json(['error' => trans("lang.Oops, Something Went Wrong")]);
 

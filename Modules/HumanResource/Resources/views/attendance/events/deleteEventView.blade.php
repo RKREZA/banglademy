@@ -1,3 +1,4 @@
+
 <div class="text-center">
           <h4>@lang('lang.are_you_sure_to_delete')?</h4>
             </div>

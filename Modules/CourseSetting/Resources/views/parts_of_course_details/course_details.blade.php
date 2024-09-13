@@ -1,4 +1,4 @@
-<form action="{{route('AdminUpdateCourse')}}" method="POST" enctype="multipart/form-data">
+ <form action="{{route('AdminUpdateCourse')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                     <div class="row">
                                         <div class="col-xl-12">
