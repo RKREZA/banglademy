@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 use Modules\CourseSetting\Entities\Course;
 use Modules\CourseSetting\Entities\CourseEnrolled;
 use Modules\Payment\Entities\InstructorPayout;
@@ -392,6 +393,63 @@ class AdminController extends Controller
         return redirect()->back();
     }
 
+    public function enrollEdit($id)
+    {
+
+        if (demoCheck()) {
+            return redirect()->back();
+        }
+        $enroll = CourseEnrolled::findOrFail($id);
+//        $courses = Course::where('status', 1)->select('id', 'title', 'type')->get();
+        $courses = Course::select('id', 'title', 'type')->get();
+        $students = User::where('role_id', 3)->where('status', 1)->select('id', 'name', 'email')->get();
+
+        $user = Auth::user();
+        if ($user->role_id == 1 || $enroll->user->id == $user->id) {
+            return view('backend.student.edit_enroll', compact('enroll','courses','students'));
+//            return view('backend.student.edit_enroll',[
+//                'enroll'    =>  $enroll,
+//                'courses'    =>  $courses,
+//                'students'    =>  $students,
+//            ]);
+        }
+
+        Toastr::success(trans('common.Operation successful'), trans('common.Success'));
+        return redirect()->back();
+    }
+
+    public function enrollUpdate(Request $request ,$id)
+    {
+
+        $enroll = CourseEnrolled::findOrFail($id);
+
+        $rules = [
+            'course_id' => 'required',
+            'user_id' => 'required',
+            'discount_amount' => 'required',
+            'purchase_price' => 'required',
+            'reveune' => 'required',
+        ];
+        $this->validate($request, $rules, validationMessage($rules));
+        $course = Course::find($request->course_id);
+
+        $user = User::find($course->user_id);
+        $user->balance -= $enroll->reveune;
+        $user->balance += $request->reveune;
+        $user->save();
+
+        $enroll->course_id  = $request->course_id;
+        $enroll->user_id        = $request->user_id;
+        $enroll->purchase_price = $request->purchase_price;
+        $enroll->discount_amount= $request->discount_amount;
+        $enroll->reveune        = $request->reveune;
+        $enroll->save();
+
+
+        Toastr::success(trans('common.Operation successful'), trans('common.Success'));
+        return redirect()->route('admin.enrollLogs');
+    }
+
     public function getEnrollLogsData(Request $request)
     {
         $user = Auth::user();
@@ -431,7 +489,9 @@ class AdminController extends Controller
             })
             ->editColumn('course.title', function ($query) {
                 return $query->course->title;
-
+            })
+            ->editColumn('course.revenue', function ($query) {
+                return $query->reveune ;
             })
             ->editColumn('created_at', function ($query) {
                 return showDate(@$query->created_at);
@@ -442,10 +502,12 @@ class AdminController extends Controller
 
                 if (permissionCheck('course.delete')) {
                     $deleteUrl = route('admin.enrollDelete', $query->id);
-                    $course_delete = '<a onclick="confirm_modal(\'' . $deleteUrl . '\')"
-                                                               class="dropdown-item edit_brand">' . trans('common.Delete') . '</a>';
+                    $editUrl = route('admin.enrollEdit', $query->id);
+                    $course_delete = '<a onclick="confirm_modal(\'' . $deleteUrl . '\')"class="dropdown-item edit_brand">' . trans('common.Delete') . '</a>';
+                    $course_edit = '<a href="'.$editUrl.'"class="dropdown-item edit_brand">' . trans('common.Edit') . '</a>';
                 } else {
                     $course_delete = "";
+                    $course_edit = "";
                 }
 
                 $actioinView = ' <div class="dropdown CRM_dropdown">
@@ -460,13 +522,14 @@ class AdminController extends Controller
 
                                                         ' . $course_delete . '
 
-
+                                                        ' . $course_edit . '
 
 
                                                     </div>
                                                 </div>';
 
                 return $actioinView;
+
 
 
             })->rawColumns(['user.image', 'action'])->make(true);

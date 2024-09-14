@@ -14,13 +14,14 @@ define('LARAVELSTART', microtime(true));
 | we will load this file so that any pre-rendered content can be shown
 | instead of starting the framework, which could cause an exception.
 |
-/
+*/
 
-if (fileexists(DIR.'/../storage/framework/maintenance.php')) {
-    require _DIR.'/../storage/framework/maintenance.php';
+if (file_exists(__DIR__.'/../storage/framework/maintenance.php')) {
+    require __DIR__.'/../storage/framework/maintenance.php';
+    exit; // Exit after loading maintenance mode file
 }
 
-/
+/*
 |--------------------------------------------------------------------------
 | Register The Auto Loader
 |--------------------------------------------------------------------------
@@ -29,11 +30,11 @@ if (fileexists(DIR.'/../storage/framework/maintenance.php')) {
 | this application. We just need to utilize it! We'll simply require it
 | into the script here so we don't need to manually load our classes.
 |
-/
+*/
 
-require DIR.'/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
-/
+/*
 |--------------------------------------------------------------------------
 | Run The Application
 |--------------------------------------------------------------------------
@@ -44,7 +45,7 @@ require DIR.'/../vendor/autoload.php';
 |
 */
 
-$app = requireonce __DIR.'/../bootstrap/app.php';
+$app = require_once __DIR__.'/../bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
 

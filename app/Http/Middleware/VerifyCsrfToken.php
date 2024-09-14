@@ -20,9 +20,6 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        '/order/aamarpay/success',
-        '/order/aamarpay/failed',
-
         '/payment/sslcommerz/pay-via-ajax',
         '/payment/sslcommerz/success',
         '/payment/sslcommerz/cancel',
@@ -34,6 +31,7 @@ class VerifyCsrfToken extends Middleware
         '/install/*',
         'mobilpay/confirm/deposit',
         'mobilpay/confirm/payment',
-
+        'order/aamarpay/success',
+        'order/aamarpay/failed',
     ];
 }

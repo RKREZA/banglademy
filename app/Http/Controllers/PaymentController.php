@@ -61,75 +61,81 @@ class PaymentController extends Controller
             return redirect('/');
         }
 
-        $rules = [
-            'old_billing' => 'required_if:billing_address,previous',
-            'first_name' => 'required_if:billing_address,new',
-            'last_name' => 'required_if:billing_address,new',
-            'country' => 'required_if:billing_address,new',
-            'address1' => 'required_if:billing_address,new',
-            'city' => 'required_if:billing_address,new',
-            'phone' => 'required_if:billing_address,new',
-            'email' => 'required_if:billing_address,new',
-        ];
-        $this->validate($request, $rules, validationMessage($rules));
+//        $rules = [
+//            'old_billing' => 'required_if:billing_address,previous',
+//            'first_name' => 'required_if:billing_address,new',
+//            'last_name' => 'required_if:billing_address,new',
+//            'country' => 'required_if:billing_address,new',
+//            'address1' => 'required_if:billing_address,new',
+//            'city' => 'required_if:billing_address,new',
+//            'phone' => 'required_if:billing_address,new',
+//            'email' => 'required_if:billing_address,new',
+//        ];
+//        $this->validate($request, $rules, validationMessage($rules));
+//
+//
+//        if ($request->billing_address == 'new') {
+//            $bill = BillingDetails::where('tracking_id', $request->tracking_id)->first();
+//
+//            if (empty($bill)) {
+//                $bill = new BillingDetails();
+//            }
+//
+//            $bill->user_id = Auth::id();
+//            $bill->tracking_id = $request->tracking_id;
+//            $bill->first_name = $request->first_name;
+//            $bill->last_name = $request->last_name;
+//            $bill->company_name = $request->company_name;
+//            $bill->country = $request->country;
+//            $bill->address1 = $request->address1;
+//            $bill->address2 = $request->address2;
+//            $bill->city = $request->city;
+//            $bill->zip_code = $request->zip_code;
+//            $bill->phone = $request->phone;
+//            $bill->email = $request->email;
+//            $bill->details = $request->details;
+//            $bill->payment_method = null;
+//            $bill->save();
+//        } else {
+//
+//            $bill = BillingDetails::where('id', $request->old_billing)->first();
+//            if ($request->previous_address_edit == 1) {
+//                $bill->user_id = Auth::id();
+//                $bill->tracking_id = $request->tracking_id;
+//                $bill->first_name = $request->first_name;
+//                $bill->last_name = $request->last_name;
+//                $bill->company_name = $request->company_name;
+//                $bill->country = $request->country;
+//                $bill->address1 = $request->address1;
+//                $bill->address2 = $request->address2;
+//                $bill->city = $request->city;
+//                $bill->zip_code = $request->zip_code;
+//                $bill->phone = $request->phone;
+//                $bill->email = $request->email;
+//                $bill->details = $request->details;
+//                $bill->payment_method = null;
+//                $bill->save();
+//            }
+//        }
 
-
-        if ($request->billing_address == 'new') {
-            $bill = BillingDetails::where('tracking_id', $request->tracking_id)->first();
-
-            if (empty($bill)) {
-                $bill = new BillingDetails();
-            }
-
-            $bill->user_id = Auth::id();
-            $bill->tracking_id = $request->tracking_id;
-            $bill->first_name = $request->first_name;
-            $bill->last_name = $request->last_name;
-            $bill->company_name = $request->company_name;
-            $bill->country = $request->country;
-            $bill->address1 = $request->address1;
-            $bill->address2 = $request->address2;
-            $bill->city = $request->city;
-            $bill->zip_code = $request->zip_code;
-            $bill->phone = $request->phone;
-            $bill->email = $request->email;
-            $bill->details = $request->details;
-            $bill->payment_method = null;
-            $bill->save();
-        } else {
-
-            $bill = BillingDetails::where('id', $request->old_billing)->first();
-            if ($request->previous_address_edit == 1) {
-                $bill->user_id = Auth::id();
-                $bill->tracking_id = $request->tracking_id;
-                $bill->first_name = $request->first_name;
-                $bill->last_name = $request->last_name;
-                $bill->company_name = $request->company_name;
-                $bill->country = $request->country;
-                $bill->address1 = $request->address1;
-                $bill->address2 = $request->address2;
-                $bill->city = $request->city;
-                $bill->zip_code = $request->zip_code;
-                $bill->phone = $request->phone;
-                $bill->email = $request->email;
-                $bill->details = $request->details;
-                $bill->payment_method = null;
-                $bill->save();
-            }
-        }
-
-
+        $bill = BillingDetails::where('user_id',  Auth::id())->first();
         $tracking = Cart::where('user_id', Auth::id())->first()->tracking;
         $checkout_info = Checkout::where('tracking', $tracking)->where('user_id', Auth::id())->latest()->first();
         $carts = Cart::where('tracking', $checkout_info->tracking)->get();
 
         if ($checkout_info) {
-            $checkout_info->billing_detail_id = $bill->id;
-            $checkout_info->save();
+            if($bill){
+                $checkout_info->billing_detail_id = $bill->id;
+                $checkout_info->save();
+            }
 
             if ($checkout_info->purchase_price == 0) {
+                if($bill){
+                    $bill->payment_method = 'None';
+                    $bill->save();
+                }
+
                 $checkout_info->payment_method = 'None';
-                $bill->payment_method = 'None';
                 $checkout_info->save();
                 foreach ($carts as $cart) {
                     $this->directEnroll($cart->course_id, $checkout_info->tracking);
@@ -139,8 +145,8 @@ class PaymentController extends Controller
                 Toastr::success('Checkout Successfully Done', 'Success');
                 return redirect(route('studentDashboard'));
             } else {
-                return redirect()->route('orderPayment');
-
+//                return redirect()->route('orderPayment');
+                $this->aamarpayPayment($checkout_info);
             }
         } else {
             Toastr::error("Something Went Wrong", 'Failed');
@@ -477,80 +483,9 @@ class PaymentController extends Controller
             }
 
             elseif ($request->payment_method == "aamarpay") {
-                $tran_id = uniqid();
-                $url = 'https://secure.aamarpay.com/request.php'; // live url https://secure.aamarpay.com/request.php
-                $fields = array(
-                    'store_id' => 'banglademy', //store id will be aamarpay,  contact integration@aamarpay.com for test/live id
-                    'amount' =>  $checkout_info->purchase_price, //transaction amount
-                    'payment_type' => 'VISA', //no need to change
-                    'currency' => 'BDT',  //currenct will be USD/BDT
-                    'tran_id' => $tran_id, //transaction id must be unique from your end
-                    'cus_name' => $checkout_info->billing->first_name .' '.$checkout_info->billing->last_name,  //customer name
-                    'cus_email' => $checkout_info->billing->email, //customer email address
-                    'cus_add1' => $checkout_info->billing->address1,  //customer address
-                    'cus_add2' => $checkout_info->billing->address2, //customer address
-                    'cus_city' => 'Dhaka',  //customer city
-                    'cus_state' => 'Dhaka',  //state
-                    'cus_postcode' => '1206', //postcode or zipcode
-                    'cus_country' => $checkout_info->billing->countryDetails->name,  //country
-                    'cus_phone' => $checkout_info->billing->phone, //customer phone number
-                    'cus_fax' => 'Not¬Applicable',  //fax
-                    'ship_name' => 'ship name', //ship name
-                    'ship_add1' => 'Office #1211, Level #11 Shah Ali Plaza Market',  //ship address
-                    'ship_add2' => 'Mirpur 10 Roundabout',
-                    'ship_city' => 'Dhaka',
-                    'ship_state' => 'Dhaka',
-                    'ship_postcode' => '1216',
-                    'ship_country' => 'Bangladesh',
-                    'desc' => 'payment description',
-                    'success_url' => route('aamarpaySuccess'), //your success route
-                    'fail_url' => route('aamarpayFailed'), //your fail route
-                    'cancel_url' => route('aamarpayCancel'),  //your cancel url
-                    'opt_a' => $checkout_info->id,  //optional paramter
-                    'opt_b' => $checkout_info->tracking,
-                    'opt_c' => Auth::user()->id,
-                    'opt_d' => '',
-                    'signature_key' => '39b4e8b202bbd3d28c19bbe0302ddb26'); //signature key will provided aamarpay, contact integration@aamarpay.com for test/live signature key
-
-
-
-                #Before  going to initiate the payment order status need to update as Pending.
-                $update_product = DB::table('orders')
-                    ->where('transaction_id', $fields['tran_id'])
-                    ->updateOrInsert([
-                        'user_id' => $checkout_info->user->id,
-                        'tracking' => $checkout_info->tracking,
-                        'name' => $fields['cus_name'] ?? '',
-                        'email' => $fields['cus_email'] ?? '',
-                        'phone' => $fields['cus_phone'] ?? '',
-                        'amount' => $fields['amount'] ?? '',
-                        'status' => 'Pending',
-                        'address' => $fields['cus_add1'] ?? '',
-                        'transaction_id' => $fields['tran_id'],
-                        'currency' => $fields['currency'],
-                        'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now(),
-                    ]);
-
-
-
-
-                $fields_string = http_build_query($fields);
-
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_VERBOSE, true);
-                curl_setopt($ch, CURLOPT_URL, $url);
-
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                $url_forward = str_replace('"', '', stripslashes(curl_exec($ch)));
-                curl_close($ch);
-
-
-
-                $this->redirect_to_merchant($url_forward);
+                $this->aamarpayPayment($checkout_info);
             }
+
         } else {
             Toastr::error('Something went wrong', 'Failed');
             return Redirect::back();
@@ -694,7 +629,7 @@ class PaymentController extends Controller
              if (isModuleActive('Chat')) {
                  event(new OneToOneConnection($instractor, $user, $course));
              }*/
-            $user = Auth::user();
+            $user = Auth::user()->id;
             $this->payWithGateway([], 'None', $user);
             return response()->json([
                 'success' => $success
@@ -1253,7 +1188,7 @@ class PaymentController extends Controller
                     $checkout_info = Checkout::where('tracking', $pendingOrder->tracking)->latest()->first();
                     if ($checkout_info->user->status == 1 && $checkout_info->status == 0) {
                         if ($checkout_info->price == $responseData['amount']){
-                            $carts = Cart::where('user_id', $pendingOrder->user_id)->latest()->get();
+                            $carts = Cart::where('user_id', $checkout_info->tracking)->latest()->get();
                             foreach ($carts as $cart) {
                                 if ($cart->course_id != 0) {
                                     $check = CourseEnrolled::where('user_id', $pendingOrder->user_id)->where('course_id', $cart->course_id)->first();
@@ -1286,6 +1221,81 @@ class PaymentController extends Controller
         }
 
 
+    }
+
+
+    protected function aamarpayPayment($checkout_info){
+
+        $tran_id = uniqid();
+        $url = 'https://secure.aamarpay.com/request.php'; // live url https://secure.aamarpay.com/request.php
+        $fields = array(
+            'store_id' => 'banglademy', //store id will be aamarpay,  contact integration@aamarpay.com for test/live id
+            'amount' =>  $checkout_info->purchase_price, //transaction amount
+            'payment_type' => 'VISA', //no need to change
+            'currency' => 'BDT',  //currenct will be USD/BDT
+            'tran_id' => $tran_id, //transaction id must be unique from your end
+            'cus_name' => empty($checkout_info->billing)?'No Name':$checkout_info->billing->first_name .' '.$checkout_info->billing->last_name,  //customer name
+            'cus_email' => $checkout_info->user->email, //customer email address
+            'cus_add1' => empty($checkout_info->billing)?'No address':$checkout_info->billing->address1,  //customer address
+            'cus_add2' => empty($checkout_info->billing)?'No address':$checkout_info->billing->address2, //customer address
+            'cus_city' => 'Dhaka',  //customer city
+            'cus_state' => 'Dhaka',  //state
+            'cus_postcode' => '1206', //postcode or zipcode
+            'cus_country' => empty($checkout_info->billing)?'BD':$checkout_info->billing->countryDetails->name,  //country
+            'cus_phone' => $checkout_info->user->phone, //customer phone number
+            'cus_fax' => 'Not¬Applicable',  //fax
+            'ship_name' => 'ship name', //ship name
+            'ship_add1' => 'Office #1211, Level #11 Shah Ali Plaza Market',  //ship address
+            'ship_add2' => 'Mirpur 10 Roundabout',
+            'ship_city' => 'Dhaka',
+            'ship_state' => 'Dhaka',
+            'ship_postcode' => '1216',
+            'ship_country' => 'Bangladesh',
+            'desc' => 'payment description',
+            'success_url' => route('aamarpaySuccess'), //your success route
+            'fail_url' => route('aamarpayFailed'), //your fail route
+            'cancel_url' => route('aamarpayCancel'),  //your cancel url
+            'opt_a' => $checkout_info->id,  //optional paramter
+            'opt_b' => $checkout_info->tracking,
+            'opt_c' => Auth::user()->id,
+            'opt_d' => '',
+            'signature_key' => '39b4e8b202bbd3d28c19bbe0302ddb26'); //signature key will provided aamarpay, contact integration@aamarpay.com for test/live signature key
+
+
+
+        #Before  going to initiate the payment order status need to update as Pending.
+        $update_product = DB::table('orders')
+            ->where('transaction_id', $fields['tran_id'])
+            ->updateOrInsert([
+                'user_id' => $checkout_info->user_id,
+                'tracking' => $checkout_info->tracking,
+                'name' => $fields['cus_name'] ?? '',
+                'email' => $fields['cus_email'] ?? '',
+                'phone' => $fields['cus_phone'] ?? '',
+                'amount' => $fields['amount'] ?? '',
+                'status' => 'Pending',
+                'address' => $fields['cus_add1'] ?? '',
+                'transaction_id' => $fields['tran_id'],
+                'currency' => $fields['currency'],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+
+
+        $fields_string = http_build_query($fields);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_VERBOSE, true);
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $url_forward = str_replace('"', '', stripslashes(curl_exec($ch)));
+        curl_close($ch);
+
+
+        $this->redirect_to_merchant($url_forward);
     }
 
 

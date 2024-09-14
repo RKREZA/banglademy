@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "8.*",
+        "php": "7.4.*",
         "ext-json": "*",
         "ext-zip": "*",
         "anandsiddharth/laravel-paytm-wallet": "^2.0",

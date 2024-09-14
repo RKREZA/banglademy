@@ -20,6 +20,7 @@ use Modules\Chat\Entities\Status;
 use Modules\CourseSetting\Entities\Category;
 use Modules\FrontendManage\Entities\HeaderMenu;
 use Spatie\Valuestore\Valuestore;
+use App\Models\CountOfferDate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -169,6 +170,10 @@ class AppServiceProvider extends ServiceProvider
             ], function ($view) {
                 $data['frontendContent'] = $data['homeContent'] = app('getHomeContent');
                 $view->with($data);
+            });
+
+            View::composer('frontend.infixlmstheme.partials._menu', function($view) {
+                $view->offerCount = CountOfferDate::first();
             });
 
 
