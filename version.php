@@ -23,9 +23,3 @@ function getStorageFile($file_name)
         of <?php echo $project_name . ' is ' . getStorageFile('version') ?></h1>
     </body>
     </html>
-
-<?php
-
-if (isset($_GET['phpinfo'])) {
-    phpinfo();
-}
